@@ -90,9 +90,11 @@ Alasan:
 ```
 
 Screenshot:
-
+Kasus 1
 ![Kasus 1](screenshot/kasus1.png)
+Kasus 2
 ![Kasus 2 (negatif)](screenshot/kasus2.png)
+Kasus 3
 ![Kasus 3](screenshot/kasus3.png)
 
 `python uji.py` menjalankan 6 kasus (termasuk mode "atau" dan kasus negatif), semuanya lulus.
