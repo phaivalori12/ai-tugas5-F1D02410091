@@ -1,0 +1,30 @@
+{
+  "judul": "Diagnosis masalah kualitas air kolam lele",
+  "batas": "Aturan berasal dari 2 artikel ilmiah (Universitas Sriwijaya 2021 dan STIPER Kutai Timur 2025) tentang budidaya lele (Clarias gariepinus) di Indonesia, terutama kolam terpal. Hanya mencakup oksigen terlarut, amonia, nitrit, hidrogen sulfida, pH, dan suhu air. Hasilnya saran awal, bukan keputusan akhir; ukur ulang dengan alat dan konsultasikan dengan penyuluh perikanan setempat.",
+  "sumber": {
+    "S1": "Patriono, E., Amalia, R., Sitia, M. (2021). Kualitas air kolam budidaya dan kolam terpal untuk pertumbuhan ikan Lele Sangkuriang pada kelompok pembudidaya ikan Lele di Kabupaten PALI Sumatera Selatan. Sriwijaya Bioscientia 2(3):83-88. Jurusan Biologi, Universitas Sriwijaya. https://doi.org/10.24233/sribios.2.3.2021.378, diakses 8 Nov 2026",
+    "S2": "Haryasakti, A., Rudyanto, Kaharuddin, Wahyudi, M.H. (2025). Efektivitas Bakteri Fotosintetik Rhobac dalam Meningkatkan Kualitas Air pada Budidaya Ikan Lele di Kolam Terpal. Jurnal Pertanian Terpadu 13(1):43-52. Sekolah Tinggi Pertanian Kutai Timur. https://ojs.stiperkutim.ac.id/index.php/jpt/article/download/610/296, diakses 8 Nov 2026"
+  },
+  "pertanyaan": {
+    "DO di bawah 3 mg/L": "Apakah oksigen terlarut (DO) kolam di bawah 3 mg/L?",
+    "amonia di atas 0,02 mg/L": "Apakah kadar amonia (NH3) di atas 0,02 mg/L?",
+    "sisa pakan menumpuk": "Apakah sisa pakan atau kotoran menumpuk di kolam?",
+    "nitrit di atas 0,1 mg/L": "Apakah kadar nitrit di atas 0,1 mg/L?",
+    "bau telur busuk dari dasar kolam": "Apakah tercium bau telur busuk dari dasar kolam?",
+    "aerasi kurang": "Apakah kolam tidak punya aerasi/sirkulasi atau aerasinya kurang?",
+    "pH di bawah 6,5": "Apakah pH air di bawah 6,5?",
+    "pH di atas 8,5": "Apakah pH air di atas 8,5?",
+    "suhu di luar 25-30 C": "Apakah suhu air di luar kisaran 25-30 C?"
+  },
+  "aturan": [
+    {"id": "R1", "jika": ["DO di bawah 3 mg/L"], "mode": "dan", "maka": "hipoksia (oksigen kritis)", "sumber": ["S1", "S2"]},
+    {"id": "R2", "jika": ["amonia di atas 0,02 mg/L"], "mode": "dan", "maka": "amonia berbahaya", "sumber": ["S2"]},
+    {"id": "R3", "jika": ["amonia berbahaya", "sisa pakan menumpuk"], "mode": "dan", "maka": "amonia berasal dari sisa pakan dan limbah ikan", "sumber": ["S2"]},
+    {"id": "R4", "jika": ["nitrit di atas 0,1 mg/L"], "mode": "dan", "maka": "nitrit berbahaya", "sumber": ["S2"]},
+    {"id": "R5", "jika": ["hipoksia (oksigen kritis)", "bau telur busuk dari dasar kolam"], "mode": "dan", "maka": "dugaan hidrogen sulfida (H2S) di dasar kolam", "sumber": ["S2"]},
+    {"id": "R6", "jika": ["pH di bawah 6,5", "pH di atas 8,5"], "mode": "atau", "maka": "pH di luar batas ideal", "sumber": ["S1", "S2"]},
+    {"id": "R7", "jika": ["suhu di luar 25-30 C"], "mode": "dan", "maka": "suhu di luar batas ideal", "sumber": ["S1", "S2"]},
+    {"id": "R8", "jika": ["hipoksia (oksigen kritis)", "amonia berbahaya"], "mode": "dan", "maka": "kondisi kritis, ikan berisiko stres dan mati", "sumber": ["S1", "S2"]},
+    {"id": "R9", "jika": ["dugaan hidrogen sulfida (H2S) di dasar kolam", "aerasi kurang"], "mode": "dan", "maka": "perlu aerasi dan sirkulasi untuk menekan H2S", "sumber": ["S2"]}
+  ]
+}
