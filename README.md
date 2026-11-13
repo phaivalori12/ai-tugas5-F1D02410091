@@ -1,59 +1,57 @@
-# Tugas 5 Kecerdasan Buatan: Sistem Pakar Kualitas Air Kolam Lele
+# Tugas 5 Kecerdasan Buatan: Sistem Pakar Penentuan Cara Penyimpanan Bahan Makanan
 
 - **Nama:** Rival Hosam Wilmadani
 - **NIM:** F1D02410091
 
 ## 1. Topik dan cara menjalankan
 
-Topik: **diagnosis masalah kualitas air kolam lele** (oksigen terlarut, amonia, nitrit, hidrogen sulfida, pH, suhu).
-Program membaca file aturan `kb_lele.json`, menanyakan fakta ke pengguna, lalu menyimpulkan dengan *forward chaining* yang mesinnya ditulis sendiri (`main.py`).
+Topik: **menentukan cara penyimpanan bahan makanan** (suhu ruang, lemari pendingin, atau freezer) berdasarkan jenis bahan, kondisi bahan, dan label kemasan. Fokusnya cara penyimpanan, bukan diagnosis keamanan pangan.
+Program membaca file aturan `kb_penyimpanan.json`, menanyakan fakta ke pengguna, lalu menyimpulkan dengan *forward chaining* yang mesinnya ditulis sendiri (`main.py`).
 
 - Bahasa: Python 3.8 ke atas, tanpa library tambahan (hanya `json` dan `argparse`).
-- Menjalankan (interaktif): `python main.py`
-- Menjalankan dengan jawaban otomatis (9 huruf y/t, urut sesuai pertanyaan): `python main.py --jawab ytttyyttt`
+- Menjalankan (interaktif, di terminal): `python main.py`
+- Menjalankan dengan jawaban otomatis: `python main.py --jawab ytttttttt` (satu huruf y/t per pertanyaan yang ditanyakan)
 - Menjalankan kasus uji otomatis: `python uji.py`
 
-Struktur repository:
+Pertanyaan "habis dalam 3-4 hari?" hanya ditanyakan bila bahannya makanan matang, sehingga jumlah huruf pada `--jawab` bisa 9 atau 10.
 
-```
-kb_lele.json   file aturan + sumber
-main.py        mesin forward chaining + antarmuka
-uji.py         kasus uji otomatis
-screenshot/    bukti tangkapan layar
-README.md
-```
+Struktur repository: `kb_penyimpanan.json` (aturan + sumber + pertanyaan), `main.py` (mesin FC), `uji.py` (kasus uji), `screenshot/`, `README.md`.
 
 ## 2. Sumber
 
 | Kode | Judul | Penerbit | URL | Diakses |
 |---|---|---|---|---|
-| S1 | Kualitas air kolam budidaya dan kolam terpal untuk pertumbuhan ikan Lele Sangkuriang pada kelompok pembudidaya ikan Lele di Kabupaten PALI Sumatera Selatan (Patriono, Amalia, Sitia, 2021) | Sriwijaya Bioscientia 2(3):83-88, Jurusan Biologi, Universitas Sriwijaya | https://doi.org/10.24233/sribios.2.3.2021.378 | 8 Nov 2026 |
-| S2 | Efektivitas Bakteri Fotosintetik Rhobac dalam Meningkatkan Kualitas Air pada Budidaya Ikan Lele di Kolam Terpal (Haryasakti, Rudyanto, Kaharuddin, Wahyudi, 2025) | Jurnal Pertanian Terpadu 13(1):43-52, Sekolah Tinggi Pertanian Kutai Timur | https://ojs.stiperkutim.ac.id/index.php/jpt/article/download/610/296 | 8 Nov 2026 |
+| S1 | Storing Fresh Fruits and Vegetables for Better Taste (Kader, Thompson, Sylva, Harris) | UC Agriculture and Natural Resources, Publication #21590 | https://ucanr.edu/sites/default/files/2011-07/115275.pdf | 13 Nov 2026 |
+| S2 | Refrigerator Thermometers: Cold Facts about Food Safety (FDA Facts, Januari 2017) | U.S. Food and Drug Administration | https://www.fda.gov/media/80676/download | 13 Nov 2026 |
+| S3 | Keep Food Safe! Food Safety Basics (lembar fakta; salinan arsip) | USDA Food Safety and Inspection Service, via UNT Web Archive | https://webarchive.library.unt.edu/web/20121014010316/http:/www.fsis.usda.gov/Fact_Sheets/Keep_Food_Safe_Food_Safety_Basics/index.asp | 13 Nov 2026 |
+| S4 | Quick Storage Guide for Vegetable Crops (Deltsidis), Circular 1205 | University of Georgia Cooperative Extension | https://fieldreport.caes.uga.edu/publications/C1205/quick-storage-guide-for-vegetable-crops/ | 13 Nov 2026 |
 
 ## 3. Tabel aturan
 
-`dan` = semua syarat harus ada, `atau` = salah satu cukup. Fakta yang tidak pernah menjadi hasil aturan ditanyakan ke pengguna.
+`dan` = semua syarat harus ada, `atau` = salah satu cukup. Fakta yang tidak pernah menjadi hasil aturan ditanyakan ke pengguna (jawaban "y" atau "t" menghasilkan fakta yang ditulis pada bagian `pertanyaan` di file aturan).
 
 | Aturan | IF | THEN | Sumber | Dasar di sumber |
 |---|---|---|---|---|
-| R1 | DO di bawah 3 mg/L | hipoksia (oksigen kritis) | S1, S2 | DO di bawah 3 mg/L menyebabkan hipoksia (S2) dan menghambat pertumbuhan, stres, sampai kematian (S1) |
-| R2 | amonia di atas 0,02 mg/L | amonia berbahaya | S2 | batas aman amoniak di kolam terpal umumnya kurang dari 0,02 mg/L |
-| R3 | amonia berbahaya **AND** sisa pakan menumpuk | amonia berasal dari sisa pakan dan limbah ikan | S2 | amoniak muncul dari penguraian sisa pakan dan limbah metabolik ikan |
-| R4 | nitrit di atas 0,1 mg/L | nitrit berbahaya | S2 | kadar nitrit aman kurang dari 0,1 mg/L |
-| R5 | hipoksia (oksigen kritis) **AND** bau telur busuk dari dasar kolam | dugaan hidrogen sulfida (H2S) di dasar kolam | S2 | H2S berbau telur busuk dan terbentuk pada kondisi rendah oksigen/anaerob |
-| R6 | pH di bawah 6,5 **OR** pH di atas 8,5 | pH di luar batas ideal | S1, S2 | pH ideal 6,5-8,5 (S2); S1 mencatat pertumbuhan optimal pada pH 6,5-9,0 |
-| R7 | suhu di luar 25-30 C | suhu di luar batas ideal | S1, S2 | kisaran suhu 25-30 C (S2); S1 memuat kisaran sejenis (misalnya 26-31 C) |
-| R8 | hipoksia (oksigen kritis) **AND** amonia berbahaya | kondisi kritis, ikan berisiko stres dan mati | S1, S2 | masing-masing hipoksia dan amonia tinggi menyebabkan stres dan kematian; aturan ini menggabungkan keduanya |
-| R9 | dugaan hidrogen sulfida (H2S) di dasar kolam **AND** aerasi kurang | perlu aerasi dan sirkulasi untuk menekan H2S | S2 | H2S tinggi dapat diatasi dengan aerasi dan sirkulasi |
+| R1 | bahan sayuran berdaun | sayuran berdaun butuh dingin dan lembap | S4, S1 | sayuran berdaun disimpan pada 32-41 F dengan kelembapan relatif di atas 95% (S4) |
+| R2 | sayuran berdaun butuh dingin dan lembap | SIMPAN DI LEMARI PENDINGIN: kantong plastik berlubang di laci sayur, terpisah dari buah | S1, S4 | produk dingin disimpan dalam kantong plastik berlubang di laci; pisahkan buah dari sayur karena etilen (S1, S4) |
+| R3 | bahan pisang, tomat, ubi jalar, atau semangka utuh | SIMPAN DI SUHU RUANG: jauhkan dari sinar matahari langsung, jangan di kulkas | S1 | pisang menghitam dan tidak manis, tomat kehilangan rasa, semangka kehilangan rasa dan warna di kulkas |
+| R4 | bahan pir belum matang | SIMPAN DI SUHU RUANG sampai matang, jauhkan dari sinar matahari langsung | S1 | pir menguning, lembut, dan manis di meja |
+| R5 | bahan pir sudah matang | SIMPAN DI LEMARI PENDINGIN dan pakai dalam 1-3 hari | S1 | setelah matang, pir dapat disimpan 1-3 hari di kulkas |
+| R6 | buah atau sayur sudah dipotong atau dikupas | SIMPAN DI LEMARI PENDINGIN segera setelah dipotong atau dikupas | S1 | produk potong siap saji disimpan di kulkas |
+| R7 | bahan makanan matang atau sisa makanan | makanan matang harus didinginkan dalam 2 jam (1 jam jika di atas 32 C) | S2, S3 | sisa makanan masuk kulkas atau freezer dalam 2 jam, 1 jam bila di atas 90 F (32 C) |
+| R8 | makanan matang harus didinginkan dalam 2 jam **AND** makanan akan habis dalam 3-4 hari | SIMPAN DI LEMARI PENDINGIN: wadah tertutup dangkal, habiskan dalam 3-4 hari | S2, S3 | wadah tertutup, bagi dalam wadah kecil; sisa makanan matang dipakai dalam 3-4 hari |
+| R9 | makanan matang harus didinginkan dalam 2 jam **AND** makanan tidak akan habis dalam 3-4 hari | SIMPAN DI FREEZER: wadah tertutup dangkal, bagi dalam porsi kecil | S2, S3 | freezer 0 F atau lebih dingin; makanan beku tetap aman, hanya kualitas yang bisa menurun |
+| R10 | kemasan sudah dibuka **AND** label menyatakan simpan di kulkas setelah dibuka | SIMPAN DI LEMARI PENDINGIN sesuai label setelah kemasan dibuka | S3 | contoh: mayones komersial berlabel "refrigerate after opening" |
+| R11 | label menyatakan simpan beku | SIMPAN DI FREEZER sesuai label (simpan beku) | S3 | contoh: makanan beku siap saji berlabel "keep frozen" |
 
-Ada 9 aturan dan 7 kesimpulan akhir. Rantai: R1 menghasilkan "hipoksia" yang dipakai R5 dan R8; R5 menghasilkan "dugaan H2S" yang dipakai R9; R2 menghasilkan "amonia berbahaya" yang dipakai R3 dan R8.
+Ada 11 aturan dengan 9 kesimpulan akhir: suhu ruang (R3, R4), lemari pendingin (R2, R5, R6, R8, R10), freezer (R9, R11). Rantai aturan: R1 ke R2, R7 ke R8, dan R7 ke R9.
 
 ## 4. Metode: Forward Chaining
 
-Dipilih karena pengguna sudah punya data pengukuran (DO, pH, suhu, dst.) dan ingin tahu kesimpulannya, sehingga alur dari fakta menuju kesimpulan paling natural.
+Dipilih karena pengguna mengetahui keadaan bahannya (jenis, kondisi, label) dan ingin tahu cara menyimpannya, sehingga alur dari fakta menuju kesimpulan paling natural.
 
 ```
-memori <- fakta yang dijawab "y"
+memori <- fakta dari jawaban pengguna
 ULANGI:
     cocok <- aturan yang syaratnya terpenuhi DAN hasilnya belum ada di memori
     JIKA cocok kosong: BERHENTI
@@ -62,47 +60,33 @@ ULANGI:
     catat r sebagai asal r.maka (beserta syarat yang ada saat itu)
 ```
 
-Kesimpulan akhir adalah fakta hasil aturan yang tidak dipakai sebagai syarat aturan lain yang dijalankan. Alasan ditampilkan dengan menelusuri `asal` dari kesimpulan akhir ke belakang.
+Kesimpulan akhir adalah fakta hasil aturan yang tidak dipakai sebagai syarat aturan lain yang dijalankan. Alasan ditampilkan dengan menelusuri `asal` dari kesimpulan akhir ke belakang. Pertanyaan "habis dalam 3-4 hari?" menghasilkan fakta berbeda untuk jawaban "y" dan "t" supaya R8 dan R9 tidak bertabrakan.
 
 ## 5. Kasus uji dan screenshot
 
-| # | Jawaban "ya" | Kesimpulan |
+| # | Jawaban | Kesimpulan |
 |---|---|---|
-| 1 | DO di bawah 3 mg/L, bau telur busuk dari dasar kolam, aerasi kurang | perlu aerasi dan sirkulasi untuk menekan H2S |
-| 2 | sisa pakan menumpuk, aerasi kurang | tidak ada (kasus negatif) |
-| 3 | DO di bawah 3 mg/L, amonia di atas 0,02 mg/L, sisa pakan menumpuk | amonia berasal dari sisa pakan dan limbah ikan; kondisi kritis, ikan berisiko stres dan mati |
+| 1 | sayuran berdaun | SIMPAN DI LEMARI PENDINGIN: kantong plastik berlubang di laci sayur, terpisah dari buah |
+| 2 | semua "t" | tidak ada (kasus negatif) |
+| 3 | makanan matang, tidak habis dalam 3-4 hari | SIMPAN DI FREEZER: wadah tertutup dangkal, bagi dalam porsi kecil |
 
-Contoh keluaran kasus 1:
+Perintah: `python main.py --jawab ytttttttt`, `python main.py --jawab ttttttttt`, dan `python main.py --jawab tttttytttt`.
 
-```
-Fakta awal: DO di bawah 3 mg/L, bau telur busuk dari dasar kolam, aerasi kurang
-
-Siklus 1: R1 -> hipoksia (oksigen kritis)
-Siklus 2: R5 -> dugaan hidrogen sulfida (H2S) di dasar kolam
-Siklus 3: R9 -> perlu aerasi dan sirkulasi untuk menekan H2S
-Siklus 4: tidak ada aturan baru, berhenti
-
-Kesimpulan: perlu aerasi dan sirkulasi untuk menekan H2S
-Alasan:
-  perlu aerasi dan sirkulasi untuk menekan H2S  <- R9 (dugaan hidrogen sulfida (H2S) di dasar kolam, aerasi kurang) [sumber: S2]
-      dugaan hidrogen sulfida (H2S) di dasar kolam  <- R5 (hipoksia (oksigen kritis), bau telur busuk dari dasar kolam) [sumber: S2]
-          hipoksia (oksigen kritis)  <- R1 (DO di bawah 3 mg/L) [sumber: S1,S2]
-```
-
-Screenshot:
-Kasus 1
+Kasus 1: Sayur berdaun (R1, R2)
 ![Kasus 1](screenshot/kasus1.png)
-Kasus 2
+Kasus 2: Makanan matang yang tidak akan habis dalam 3-4 hari (R7, R9)
 ![Kasus 2 (negatif)](screenshot/kasus2.png)
-Kasus 3
+Kasus 3: Pisang utuh (R3)
 ![Kasus 3](screenshot/kasus3.png)
+Kasus 4: Kemasan dibuka dan label meminta penyimpanan di kulkas (R10)
+![Kasus 4](screenshot/kasus4.png)
 
-`python uji.py` menjalankan 6 kasus (termasuk mode "atau" dan kasus negatif), semuanya lulus.
+`python uji.py` menjalankan 12 kasus (semua aturan, kasus dua kesimpulan sekaligus, dan dua kasus tanpa kesimpulan), semuanya lulus.
 
 ## 6. Batas keberlakuan
 
-Pengetahuan dalam sistem ini berasal dari dua artikel ilmiah tentang budidaya lele (*Clarias gariepinus*) di Indonesia, satu dari Universitas Sriwijaya dan satu dari Sekolah Tinggi Pertanian Kutai Timur, terutama untuk kolam terpal, dan dipakai untuk menduga masalah kualitas air berdasarkan oksigen terlarut, amonia, nitrit, hidrogen sulfida, pH, dan suhu. Sistem tidak mencakup penyakit ikan, pakan, salinitas, maupun jenis ikan lain, dan nilai ambang bisa berbeda antar sumber. Hasilnya adalah saran awal, bukan keputusan akhir; pembudidaya sebaiknya mengukur ulang dengan alat dan berkonsultasi dengan penyuluh perikanan.
+Pengetahuan dalam sistem ini berasal dari empat sumber: panduan penyimpanan buah dan sayur dari University of California (UC ANR) dan University of Georgia Extension, serta panduan penyimpanan makanan dari FDA dan USDA FSIS. Sumber-sumber ini disusun untuk kondisi iklim sedang, dengan acuan lemari pendingin 40 F (sekitar 4 C) atau lebih dingin dan freezer 0 F (sekitar -18 C) atau lebih dingin; di iklim tropis suhu ruang lebih hangat sehingga batas waktu di luar kulkas perlu lebih ketat. Sistem hanya mencakup sayuran berdaun, pisang/tomat/ubi jalar/semangka utuh, pir, buah atau sayur terpotong, makanan matang, dan kemasan berlabel; daging mentah, ikan, telur, susu, dan bahan lain tidak dicakup. Hasilnya adalah saran cara penyimpanan, bukan diagnosis keamanan pangan dan bukan keputusan akhir; periksa label produk dan panduan resmi setempat.
 
 ## 7. Penggunaan alat bantu AI
 
-Saya menggunakan AI untuk membantu dalam mencari dan membaca sumber, menyusun aturan, dan menulis kode serta README.
+Saya menggunakan AI untuk membantu mencari dan membaca sumber, menyusun aturan, dan menulis kode serta README.

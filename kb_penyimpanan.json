@@ -1,0 +1,35 @@
+{
+  "judul": "Penentuan cara penyimpanan bahan makanan",
+  "batas": "Aturan berasal dari 4 sumber (UC Agriculture and Natural Resources, FDA, USDA FSIS, dan UGA Extension) yang disusun untuk kondisi iklim sedang. Suhu acuan: lemari pendingin 40 F (sekitar 4 C) atau lebih dingin, freezer 0 F (sekitar -18 C) atau lebih dingin. Hanya mencakup sayuran berdaun, pisang/tomat/ubi jalar/semangka utuh, pir, buah atau sayur terpotong, makanan matang, dan kemasan berlabel. Bahan lain (daging mentah, ikan, telur, susu, dll.) tidak dicakup. Ini saran cara penyimpanan, bukan diagnosis keamanan pangan; di iklim tropis, ruang yang hangat membuat batas waktu di suhu ruang lebih ketat.",
+  "sumber": {
+    "S1": "Kader, A., Thompson, J., Sylva, K., Harris, L. Storing Fresh Fruits and Vegetables for Better Taste. UC Agriculture and Natural Resources, Publication #21590 (tanpa tahun pada dokumen). https://ucanr.edu/sites/default/files/2011-07/115275.pdf, diakses 13 Nov 2026",
+    "S2": "U.S. Food and Drug Administration (2017). Refrigerator Thermometers: Cold Facts about Food Safety (FDA Facts, Januari 2017). https://www.fda.gov/media/80676/download, diakses 13 Nov 2026",
+    "S3": "USDA Food Safety and Inspection Service. Keep Food Safe! Food Safety Basics (lembar fakta; salinan arsip UNT Web Archive, 2012). https://webarchive.library.unt.edu/web/20121014010316/http:/www.fsis.usda.gov/Fact_Sheets/Keep_Food_Safe_Food_Safety_Basics/index.asp, diakses 13 Nov 2026",
+    "S4": "Deltsidis, A. Quick Storage Guide for Vegetable Crops. University of Georgia Cooperative Extension, Circular 1205 (ditinjau 25 Agustus 2026). https://fieldreport.caes.uga.edu/publications/C1205/quick-storage-guide-for-vegetable-crops/, diakses 13 Nov 2026"
+  },
+  "pertanyaan": [
+    {"ya": "bahan sayuran berdaun", "tanya": "Apakah bahannya sayuran berdaun (selada, bayam, sawi, dll.)?"},
+    {"ya": "bahan pisang, tomat, ubi jalar, atau semangka utuh", "tanya": "Apakah bahannya pisang, tomat, ubi jalar, atau semangka utuh?"},
+    {"ya": "bahan pir belum matang", "tanya": "Apakah bahannya pir yang belum matang?"},
+    {"ya": "bahan pir sudah matang", "tanya": "Apakah bahannya pir yang sudah matang?"},
+    {"ya": "buah atau sayur sudah dipotong atau dikupas", "tanya": "Apakah buah atau sayurnya sudah dipotong atau dikupas?"},
+    {"ya": "bahan makanan matang atau sisa makanan", "tanya": "Apakah bahannya makanan matang atau sisa makanan?"},
+    {"ya": "makanan akan habis dalam 3-4 hari", "tidak": "makanan tidak akan habis dalam 3-4 hari", "tanya": "Jika makanan matang: apakah akan dihabiskan dalam 3-4 hari?"},
+    {"ya": "kemasan sudah dibuka", "tanya": "Apakah kemasan produk sudah dibuka?"},
+    {"ya": "label menyatakan simpan di kulkas setelah dibuka", "tanya": "Apakah label menyatakan harus disimpan di kulkas setelah dibuka (refrigerate after opening)?"},
+    {"ya": "label menyatakan simpan beku", "tanya": "Apakah label menyatakan produk harus disimpan beku (keep frozen)?"}
+  ],
+  "aturan": [
+    {"id": "R1", "jika": ["bahan sayuran berdaun"], "mode": "dan", "maka": "sayuran berdaun butuh dingin dan lembap", "sumber": ["S4", "S1"]},
+    {"id": "R2", "jika": ["sayuran berdaun butuh dingin dan lembap"], "mode": "dan", "maka": "SIMPAN DI LEMARI PENDINGIN: kantong plastik berlubang di laci sayur, terpisah dari buah", "sumber": ["S1", "S4"]},
+    {"id": "R3", "jika": ["bahan pisang, tomat, ubi jalar, atau semangka utuh"], "mode": "dan", "maka": "SIMPAN DI SUHU RUANG: jauhkan dari sinar matahari langsung, jangan di kulkas", "sumber": ["S1"]},
+    {"id": "R4", "jika": ["bahan pir belum matang"], "mode": "dan", "maka": "SIMPAN DI SUHU RUANG sampai matang, jauhkan dari sinar matahari langsung", "sumber": ["S1"]},
+    {"id": "R5", "jika": ["bahan pir sudah matang"], "mode": "dan", "maka": "SIMPAN DI LEMARI PENDINGIN dan pakai dalam 1-3 hari", "sumber": ["S1"]},
+    {"id": "R6", "jika": ["buah atau sayur sudah dipotong atau dikupas"], "mode": "dan", "maka": "SIMPAN DI LEMARI PENDINGIN segera setelah dipotong atau dikupas", "sumber": ["S1"]},
+    {"id": "R7", "jika": ["bahan makanan matang atau sisa makanan"], "mode": "dan", "maka": "makanan matang harus didinginkan dalam 2 jam (1 jam jika di atas 32 C)", "sumber": ["S2", "S3"]},
+    {"id": "R8", "jika": ["makanan matang harus didinginkan dalam 2 jam (1 jam jika di atas 32 C)", "makanan akan habis dalam 3-4 hari"], "mode": "dan", "maka": "SIMPAN DI LEMARI PENDINGIN: wadah tertutup dangkal, habiskan dalam 3-4 hari", "sumber": ["S2", "S3"]},
+    {"id": "R9", "jika": ["makanan matang harus didinginkan dalam 2 jam (1 jam jika di atas 32 C)", "makanan tidak akan habis dalam 3-4 hari"], "mode": "dan", "maka": "SIMPAN DI FREEZER: wadah tertutup dangkal, bagi dalam porsi kecil", "sumber": ["S2", "S3"]},
+    {"id": "R10", "jika": ["kemasan sudah dibuka", "label menyatakan simpan di kulkas setelah dibuka"], "mode": "dan", "maka": "SIMPAN DI LEMARI PENDINGIN sesuai label setelah kemasan dibuka", "sumber": ["S3"]},
+    {"id": "R11", "jika": ["label menyatakan simpan beku"], "mode": "dan", "maka": "SIMPAN DI FREEZER sesuai label (simpan beku)", "sumber": ["S3"]}
+  ]
+}

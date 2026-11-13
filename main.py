@@ -46,27 +46,40 @@ def cetak_alasan(fakta, asal, indent=2):
             cetak_alasan(s, asal, indent + 4)
 
 
+
 def tanya_user(pertanyaan, jawaban_otomatis=None):
     fakta = []
+
     print("Jawab y/t.")
-    for i, (teks, tanya) in enumerate(pertanyaan.items(), 1):
+
+    for i, item in enumerate(pertanyaan, 1):
+        tanya = item["tanya"]
+
         while True:
             if jawaban_otomatis:
                 j = jawaban_otomatis[i - 1].lower()
                 print(f"{i}. {tanya} (y/t) > {j}")
             else:
                 j = input(f"{i}. {tanya} (y/t) > ").strip().lower()
+
             if j in ("y", "t"):
                 break
+
             print("   Ketik y atau t.")
-        if j == "y":
-            fakta.append(teks)
+
+        if j == "y" and "ya" in item:
+            fakta.append(item["ya"])
+
+        elif j == "t" and "tidak" in item:
+            fakta.append(item["tidak"])
+
     return fakta
+
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--kb", default="kb_lele.json")
+    ap.add_argument("--kb", default="kb_penyimpanan.json")
     ap.add_argument("--jawab", help="string y/t, satu huruf per pertanyaan")
     args = ap.parse_args()
 
