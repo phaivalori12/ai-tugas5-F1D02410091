@@ -64,21 +64,43 @@ Kesimpulan akhir adalah fakta hasil aturan yang tidak dipakai sebagai syarat atu
 
 ## 5. Kasus uji dan screenshot
 
-| # | Jawaban | Kesimpulan |
-|---|---|---|
-| 1 | sayuran berdaun | SIMPAN DI LEMARI PENDINGIN: kantong plastik berlubang di laci sayur, terpisah dari buah |
-| 2 | semua "t" | tidak ada (kasus negatif) |
-| 3 | makanan matang, tidak habis dalam 3-4 hari | SIMPAN DI FREEZER: wadah tertutup dangkal, bagi dalam porsi kecil |
 
-Perintah: `python main.py --jawab ytttttttt`, `python main.py --jawab ttttttttt`, dan `python main.py --jawab tttttytttt`.
+## Pengujian Sistem
 
-Kasus 1: Sayur berdaun (R1, R2)
+Pengujian dilakukan menggunakan lima skenario untuk memastikan sistem dapat menghasilkan kesimpulan berdasarkan fakta yang diberikan. Pengujian juga mencakup proses Forward Chaining berantai dan kondisi ketika tidak ada aturan yang terpenuhi.
+
+| No. | Kasus Pengujian | Jawaban Pengguna | Rules yang Dijalankan | Kesimpulan |
+|---|---|---|---|---|
+| 1 | Sayuran berdaun | Ya pada pertanyaan sayuran berdaun | R1, R2 | Simpan di lemari pendingin menggunakan kantong plastik berlubang di laci sayur, terpisah dari buah. |
+| 2 | Makanan matang yang tidak akan habis dalam 3–4 hari | Ya pada makanan matang, tidak pada pertanyaan akan habis dalam 3–4 hari | R7, R9 | Simpan di freezer menggunakan wadah tertutup dangkal dan bagi dalam porsi kecil. |
+| 3 | Pisang utuh | Ya pada pertanyaan pisang, tomat, ubi jalar, atau semangka utuh | R3 | Simpan di suhu ruang, jauhkan dari sinar matahari langsung, dan jangan di kulkas. |
+| 4 | Kemasan dibuka dan label meminta penyimpanan di kulkas | Ya pada pertanyaan kemasan dibuka dan label penyimpanan kulkas | R10 | Simpan di lemari pendingin sesuai instruksi label setelah kemasan dibuka. |
+
+### Perintah Pengujian
+
+Setiap karakter pada argumen `--jawab` mewakili jawaban untuk satu pertanyaan secara berurutan. `y` berarti ya dan `t` berarti tidak.
+
+1. Kasus 1 - Sayuran berdaun:
+   `python main.py --jawab yttttttttt`
+
+2. Kasus 2 - Makanan matang yang tidak akan habis dalam 3–4 hari:
+   `python main.py --jawab tttttytttt`
+
+3. Kasus 3 - Pisang utuh:
+   `python main.py --jawab tytttttttt`
+
+4. Kasus 4 - Kemasan dibuka dan label meminta penyimpanan di kulkas:
+   `python main.py --jawab ttttttttyt`
+
+### Dokumentasi Hasil Pengujian
+
+**Kasus 1: Sayuran berdaun (R1 → R2)**
 ![Kasus 1](screenshot/kasus1.png)
-Kasus 2: Makanan matang yang tidak akan habis dalam 3-4 hari (R7, R9)
-![Kasus 2 (negatif)](screenshot/kasus2.png)
-Kasus 3: Pisang utuh (R3)
+**Kasus 2: Makanan matang yang tidak akan habis dalam 3–4 hari (R7 → R9)**
+![Kasus 2](screenshot/kasus2.png)
+**Kasus 3: Pisang utuh (R3)**
 ![Kasus 3](screenshot/kasus3.png)
-Kasus 4: Kemasan dibuka dan label meminta penyimpanan di kulkas (R10)
+**Kasus 4: Kemasan dibuka dan label meminta penyimpanan di kulkas (R10)**
 ![Kasus 4](screenshot/kasus4.png)
 
 `python uji.py` menjalankan 12 kasus (semua aturan, kasus dua kesimpulan sekaligus, dan dua kasus tanpa kesimpulan), semuanya lulus.
